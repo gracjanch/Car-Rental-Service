@@ -1,4 +1,51 @@
 package com.carrentalservice.controller;
 
+import com.carrentalservice.model.entity.Car;
+import com.carrentalservice.model.entity.Customer;
+import com.carrentalservice.service.CustomerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/customers")
+@RequiredArgsConstructor
 public class CustomerController {
+
+    private final CustomerService customerService;
+
+    @GetMapping
+    public ResponseEntity<List<Customer>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(customerService.getAll());
+    }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<Customer> getById(@PathVariable final Long customerId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(customerService.getById(customerId));
+    }
+
+    @PostMapping
+    public ResponseEntity<Customer> create(@RequestBody final Customer customerReq) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(customerService.create(customerReq));
+    }
+
+    @PutMapping("/{customerId}")
+    public ResponseEntity<Customer> updateById(@PathVariable final Long customerId,
+                                          @RequestBody final Customer customerReq) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(customerService.updateById(customerId, customerReq));
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<Void> removeById(@PathVariable final Long customerId) {
+        customerService.removeById(customerId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @Data
@@ -58,4 +59,7 @@ public class Customer {
             columnDefinition = "TEXT"
     )
     private String docNumber;
+
+    @OneToMany
+    private List<Rent> rentList;
 }

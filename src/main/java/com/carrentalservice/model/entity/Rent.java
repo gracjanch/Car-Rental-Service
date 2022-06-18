@@ -46,6 +46,12 @@ public class Rent {
     )
     private LocalDateTime endDateTime;
 
+    @Column(
+            name = "cost",
+            nullable = false
+    )
+    private Long cost;
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "customer_id")
     private Customer customer;

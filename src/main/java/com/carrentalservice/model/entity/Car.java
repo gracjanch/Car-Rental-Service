@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @Data
@@ -64,4 +65,19 @@ public class Car {
             columnDefinition = "BOOLEAN"
     )
     private Boolean availability;
+
+    @Column(
+            name = "production_year",
+            nullable = false
+    )
+    private Long productionYear;
+
+    @Column(
+            name = "price_per_hour",
+            nullable = false
+    )
+    private Long pricePerHour;
+
+    @OneToMany
+    private List<Rent> rentList;
 }

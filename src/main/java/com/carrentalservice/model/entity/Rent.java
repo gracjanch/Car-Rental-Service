@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Builder
@@ -46,6 +47,7 @@ public class Rent {
     )
     private LocalDateTime endDateTime;
 
+    @Positive(message = "Cost is not positive")
     @Column(
             name = "cost",
             nullable = false

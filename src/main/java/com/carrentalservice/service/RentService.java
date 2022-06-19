@@ -1,5 +1,8 @@
 package com.carrentalservice.service;
 
+import com.carrentalservice.exception.type.car.CarNotFoundException;
+import com.carrentalservice.exception.type.rent.RentNotFoundException;
+import com.carrentalservice.exception.type.rent.RentPeriodNotFree;
 import com.carrentalservice.model.entity.Car;
 import com.carrentalservice.model.entity.Customer;
 import com.carrentalservice.model.entity.Rent;
@@ -35,7 +38,7 @@ public class RentService {
         Rent rent = RentMapper.map(rentRequest);
         Car car = carRepository.findByIdAndAvailabilityEquals(
                 rent.getCar().getId(), true)
-                .orElseThrow();
+                .orElseThrow(CarNotFoundException::new);
         getRentForCar(car).forEach(r ->
                 isPeriodFree(rentRequest.getStartDateTime(),
                         rentRequest.getEndDateTime(), r));
@@ -46,9 +49,9 @@ public class RentService {
     public Rent updateById (final Long rentId, final RentRequest rentRequest) {
         final Rent rentFromDb = getRentByIdFromDb(rentId);
         final Customer customer = customerRepository.findById(rentRequest.getCustomerId())
-                .orElseThrow();
+                .orElseThrow(CarNotFoundException::new);
         final Car car = carRepository.findById(rentRequest.getCarId())
-                        .orElseThrow();
+                        .orElseThrow(CarNotFoundException::new);
         getRentForCar(car)
                 .stream().filter(r -> !r.getId().equals(rentId))
                         .forEach(r ->
@@ -71,7 +74,7 @@ public class RentService {
 
     private Rent getRentByIdFromDb(final Long rentId) {
         final Optional<Rent> rentFromDb = rentRepository.findById(rentId);
-        return rentFromDb.orElseThrow();
+        return rentFromDb.orElseThrow(RentNotFoundException::new);
     }
 
     private List<Rent> getRentForCar(final Car car) {
@@ -83,7 +86,7 @@ public class RentService {
                               final Rent rent) {
         if (isStartDateTimeNotFree(startOfRent, rent) ||
                 isEndDateTimeNotFree(endOfRent, rent)) {
-            throw new RuntimeException();
+            throw new RentPeriodNotFree();
         }
 
     }

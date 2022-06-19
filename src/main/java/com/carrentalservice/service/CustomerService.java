@@ -1,5 +1,6 @@
 package com.carrentalservice.service;
 
+import com.carrentalservice.exception.type.customer.CustomerNotFoundException;
 import com.carrentalservice.model.entity.Car;
 import com.carrentalservice.model.entity.Customer;
 import com.carrentalservice.repository.CustomerRepository;
@@ -44,6 +45,6 @@ public class CustomerService {
 
     private Customer getCustomerByIdFromDb(final Long customerId) {
         final Optional<Customer> customerFromDb = customerRepository.findById(customerId);
-        return customerFromDb.orElseThrow();
+        return customerFromDb.orElseThrow(CustomerNotFoundException::new);
     }
 }

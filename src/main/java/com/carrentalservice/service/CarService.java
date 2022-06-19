@@ -1,5 +1,6 @@
 package com.carrentalservice.service;
 
+import com.carrentalservice.exception.type.car.CarNotFoundException;
 import com.carrentalservice.model.entity.Car;
 import com.carrentalservice.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,6 @@ public class CarService {
 
     private Car getCarByIdFromDb(final Long carId) {
         final Optional<Car> carFromDb = carRepository.findById(carId);
-        return carFromDb.orElseThrow();
+        return carFromDb.orElseThrow(CarNotFoundException::new);
     }
 }

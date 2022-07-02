@@ -1,6 +1,7 @@
 package com.carrentalservice.service;
 
 import com.carrentalservice.exception.type.car.CarNotFoundException;
+import com.carrentalservice.exception.type.customer.CustomerNotFoundException;
 import com.carrentalservice.exception.type.rent.RentNotFoundException;
 import com.carrentalservice.exception.type.rent.RentPeriodNotFree;
 import com.carrentalservice.model.entity.Car;
@@ -36,13 +37,19 @@ public class RentService {
 
     public Rent create(final RentRequest rentRequest) {
         Rent rent = RentMapper.map(rentRequest);
+        Customer customer = customerRepository.findById(rentRequest.getCustomerId())
+                .orElseThrow(CustomerNotFoundException::new);
         Car car = carRepository.findByIdAndAvailabilityEquals(
-                rent.getCar().getId(), true)
+                rentRequest.getCarId(), true)
                 .orElseThrow(CarNotFoundException::new);
         getRentForCar(car).forEach(r ->
                 isPeriodFree(rentRequest.getStartDateTime(),
                         rentRequest.getEndDateTime(), r));
+
+        rent.setCustomer(customer);
         rent.setCar(car);
+
+
         return rentRepository.save(rent);
     }
 

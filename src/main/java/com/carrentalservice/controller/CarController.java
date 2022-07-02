@@ -1,6 +1,7 @@
 package com.carrentalservice.controller;
 
 import com.carrentalservice.model.entity.Car;
+import com.carrentalservice.model.request.CarRequest;
 import com.carrentalservice.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,16 +30,16 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity<Car> create(@RequestBody final Car carReq) {
+    public ResponseEntity<Car> create(@RequestBody final CarRequest carRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(carService.create(carReq));
+                .body(carService.create(carRequest));
     }
 
     @PutMapping("/{carId}")
     public ResponseEntity<Car> updateById(@PathVariable final Long carId,
-                                          @RequestBody final Car carReq) {
+                                          @RequestBody final CarRequest carRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(carService.updateById(carId, carReq));
+                .body(carService.updateById(carId, carRequest));
     }
 
     @DeleteMapping("/{carId}")

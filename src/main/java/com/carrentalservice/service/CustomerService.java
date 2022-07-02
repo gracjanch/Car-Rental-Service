@@ -3,7 +3,9 @@ package com.carrentalservice.service;
 import com.carrentalservice.exception.type.customer.CustomerNotFoundException;
 import com.carrentalservice.model.entity.Car;
 import com.carrentalservice.model.entity.Customer;
+import com.carrentalservice.model.request.CustomerRequest;
 import com.carrentalservice.repository.CustomerRepository;
+import com.carrentalservice.utils.mapper.CustomerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,18 +26,18 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public Customer create(final Customer customerReq) {
-        Customer customer = customerReq;
+    public Customer create(final CustomerRequest customerRequest) {
+        Customer customer = CustomerMapper.map(customerRequest);
         return customerRepository.save(customer);
     }
 
-    public Customer updateById (final Long customerId, final Customer customerReq) {
+    public Customer updateById (final Long customerId, final CustomerRequest customerRequest) {
         final Customer customerFromDb = getCustomerByIdFromDb(customerId);
 
-        customerFromDb.setName(customerReq.getName());
-        customerFromDb.setLastName(customerReq.getLastName());
-        customerFromDb.setDocType(customerReq.getDocType());
-        customerFromDb.setDocNumber(customerReq.getDocNumber());
+        customerFromDb.setName(customerRequest.getName());
+        customerFromDb.setLastName(customerRequest.getLastName());
+        customerFromDb.setDocType(customerRequest.getDocType());
+        customerFromDb.setDocNumber(customerRequest.getDocNumber());
         return customerRepository.save(customerFromDb);
     }
 

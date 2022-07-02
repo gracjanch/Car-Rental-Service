@@ -1,5 +1,6 @@
 package com.carrentalservice.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class Customer {
             generator = "customer_sequence"
     )
     @Column(
-            name = "customer_id",
+            name = "id",
             updatable = false
     )
     private Long id;
@@ -74,9 +74,10 @@ public class Customer {
     )
     private String docNumber;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "customer",
-            cascade = CascadeType.REMOVE
+            cascade = CascadeType.ALL
     )
     private List<Rent> rentList;
 }

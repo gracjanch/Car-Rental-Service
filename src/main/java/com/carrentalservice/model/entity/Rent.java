@@ -28,7 +28,7 @@ public class Rent {
             generator = "rent_sequence"
     )
     @Column(
-            name = "rent_id",
+            name = "id",
             updatable = false
     )
     private Long id;
@@ -50,9 +50,10 @@ public class Rent {
     @Positive(message = "Cost is not positive")
     @Column(
             name = "cost",
-            nullable = false
+            nullable = false,
+            columnDefinition = "INTEGER"
     )
-    private Long cost;
+    private Integer cost;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "customer_id")

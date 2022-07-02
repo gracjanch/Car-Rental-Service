@@ -1,15 +1,13 @@
 package com.carrentalservice.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
-import java.time.LocalDateTime;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Builder
@@ -25,7 +23,9 @@ import java.util.List;
 public class Car {
 
     private static final int MIN_PRODUCTION_YEAR = 1940;
-    private static final int MAX_PRODUCTION_YEAR = LocalDateTime.now().getYear();
+    private static final int MAX_PRODUCTION_YEAR = 2022;
+    private static final int MIN_PRICE_PER_HOUR = 1;
+    private static final int MAX_PRICE_PER_HOUR = 200;
 
     @Id
     @SequenceGenerator(
@@ -38,7 +38,7 @@ public class Car {
             generator = "car_sequence"
     )
     @Column(
-            name = "car_id",
+            name = "id",
             updatable = false
     )
     private Long id;
@@ -85,27 +85,37 @@ public class Car {
     )
     private Boolean availability;
 
-    @Pattern(
-            regexp = "([1]|[2])[0-9]{3}",
-            message = "Production year have to match to format: 1234"
+    @Min(
+            value = MIN_PRODUCTION_YEAR,
+            message = "Minimum production year is " + MIN_PRODUCTION_YEAR
+    )
+    @Max(
+            value = MAX_PRODUCTION_YEAR,
+            message = "Maximum production year is " + MAX_PRODUCTION_YEAR
     )
     @Column(
             name = "production_year",
-            nullable = false
+            nullable = false,
+            columnDefinition = "INTEGER"
     )
-    private Long productionYear;
+    private Integer productionYear;
 
-    @Positive(message = "Price per hour is not positive")
-    @Pattern(
-            regexp = "[1-9][0-9]",
-            message = "Price per hour have to match to format: \"11\""
+    @Min(
+            value = MIN_PRICE_PER_HOUR,
+            message = "Minimum price per hour is " + MIN_PRICE_PER_HOUR
+    )
+    @Max(
+            value = MAX_PRODUCTION_YEAR,
+            message = "Maximum price per hour is " + MAX_PRICE_PER_HOUR
     )
     @Column(
             name = "price_per_hour",
-            nullable = false
+            nullable = false,
+            columnDefinition = "INTEGER"
     )
-    private Long pricePerHour;
+    private Integer pricePerHour;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "car",
             cascade = CascadeType.REMOVE

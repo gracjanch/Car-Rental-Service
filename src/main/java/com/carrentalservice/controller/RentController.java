@@ -1,6 +1,5 @@
 package com.carrentalservice.controller;
 
-import com.carrentalservice.model.entity.Customer;
 import com.carrentalservice.model.entity.Rent;
 import com.carrentalservice.model.request.RentRequest;
 import com.carrentalservice.service.RentService;
@@ -31,16 +30,16 @@ public class RentController {
     }
 
     @PostMapping
-    public ResponseEntity<Rent> create(@RequestBody final RentRequest rentReq) {
+    public ResponseEntity<Rent> create(@RequestBody final RentRequest rentRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(rentService.create(rentReq));
+                .body(rentService.create(rentRequest));
     }
 
     @PutMapping("/{rentId}")
     public ResponseEntity<Rent> updateById(@PathVariable final Long rentId,
-                                               @RequestBody final RentRequest rentReq) {
+                                               @RequestBody final RentRequest rentRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(rentService.updateById(rentId, rentReq));
+                .body(rentService.updateById(rentId, rentRequest));
     }
 
     @DeleteMapping("/{rentId}")

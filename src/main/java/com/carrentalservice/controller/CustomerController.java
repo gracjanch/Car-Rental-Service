@@ -1,7 +1,8 @@
 package com.carrentalservice.controller;
 
-import com.carrentalservice.model.entity.Car;
+
 import com.carrentalservice.model.entity.Customer;
+import com.carrentalservice.model.request.CustomerRequest;
 import com.carrentalservice.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,16 +31,16 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Customer> create(@RequestBody final Customer customerReq) {
+    public ResponseEntity<Customer> create(@RequestBody final CustomerRequest customerRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(customerService.create(customerReq));
+                .body(customerService.create(customerRequest));
     }
 
     @PutMapping("/{customerId}")
     public ResponseEntity<Customer> updateById(@PathVariable final Long customerId,
-                                          @RequestBody final Customer customerReq) {
+                                          @RequestBody final CustomerRequest customerRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(customerService.updateById(customerId, customerReq));
+                .body(customerService.updateById(customerId, customerRequest));
     }
 
     @DeleteMapping("/{customerId}")

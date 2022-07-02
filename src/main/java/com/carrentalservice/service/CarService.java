@@ -2,7 +2,9 @@ package com.carrentalservice.service;
 
 import com.carrentalservice.exception.type.car.CarNotFoundException;
 import com.carrentalservice.model.entity.Car;
+import com.carrentalservice.model.request.CarRequest;
 import com.carrentalservice.repository.CarRepository;
+import com.carrentalservice.utils.mapper.CarMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,19 +26,19 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public Car create(final Car carReq) {
-        Car car = carReq;
+    public Car create(final CarRequest carRequest) {
+        Car car = CarMapper.map(carRequest);
         return carRepository.save(car);
     }
 
-    public Car updateById (final Long carId, final Car carReq) {
+    public Car updateById (final Long carId, final CarRequest carRequest) {
         final Car carFromDb = getCarByIdFromDb(carId);
 
-        carFromDb.setBrand(carReq.getBrand());
-        carFromDb.setModel(carReq.getModel());
-        carFromDb.setSeats(carReq.getSeats());
-        carFromDb.setAvailability(carReq.getAvailability());
-        carFromDb.setRegNumber(carReq.getRegNumber());
+        carFromDb.setBrand(carRequest.getBrand());
+        carFromDb.setModel(carRequest.getModel());
+        carFromDb.setSeats(carRequest.getSeats());
+        carFromDb.setAvailability(carRequest.getAvailability());
+        carFromDb.setRegNumber(carRequest.getRegNumber());
         return carRepository.save(carFromDb);
     }
 
